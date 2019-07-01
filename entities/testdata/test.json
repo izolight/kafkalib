@@ -1,0 +1,27 @@
+[
+  {
+    "resource-type": "topic",
+    "resources": [
+      {
+        "resource": "testtopic",
+        "principals": [
+          {
+            "principal": "User:testuser",
+            "ACLs": [
+              {
+                "host": "*",
+                "operation": "read",
+                "permission-type": "allow"
+              },
+              {
+                "host": "*",
+                "operation": "write",
+                "permission-type": "allow"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

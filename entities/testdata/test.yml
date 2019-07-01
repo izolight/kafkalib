@@ -1,0 +1,12 @@
+- resource-type: topic
+  resources:
+  - principals:
+    - ACLs:
+      - host: '*'
+        operation: read
+        permission-type: allow
+      - host: '*'
+        operation: write
+        permission-type: allow
+      principal: User:testuser
+    resource: testtopic

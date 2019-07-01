@@ -1,0 +1,23 @@
+[
+  {
+    "principal": "User:testuser",
+    "resources": [
+      {
+        "ACLs": [
+          {
+            "host": "*",
+            "operation": "read",
+            "permission-type": "allow"
+          },
+          {
+            "host": "*",
+            "operation": "write",
+            "permission-type": "allow"
+          }
+        ],
+        "resource": "testtopic",
+        "resource-type": "topic"
+      }
+    ]
+  }
+]
