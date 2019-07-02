@@ -1,4 +1,4 @@
-module github.com/izolight/kafkalib
+module gitea.izolight.xyz/gabor/kafkalib
 
 go 1.12
 
