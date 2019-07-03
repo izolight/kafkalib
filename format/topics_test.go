@@ -3,7 +3,7 @@ package format_test
 import (
 	"bytes"
 	"github.com/Shopify/sarama"
-	"gitea.izolight.xyz/gabor/kafkalib/format"
+	"github.com/izolight/kafkalib/format"
 	"strings"
 	"testing"
 )

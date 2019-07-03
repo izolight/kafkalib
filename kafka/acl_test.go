@@ -2,7 +2,7 @@ package kafka_test
 
 import (
 	"github.com/Shopify/sarama"
-	"gitea.izolight.xyz/gabor/kafkalib/kafka"
+	"github.com/izolight/kafkalib/kafka"
 	"testing"
 )
 

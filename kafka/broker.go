@@ -2,7 +2,7 @@ package kafka
 
 import (
 	"github.com/Shopify/sarama"
-	"gitea.izolight.xyz/gabor/kafkalib/format"
+	"github.com/izolight/kafkalib/format"
 )
 
 // BrokerClient is uses for interacting with kafka and saving the data in memory

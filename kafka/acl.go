@@ -3,7 +3,7 @@ package kafka
 import (
 	"fmt"
 	"github.com/Shopify/sarama"
-	"gitea.izolight.xyz/gabor/kafkalib/format"
+	"github.com/izolight/kafkalib/format"
 )
 
 // GetACLs returns ACLs according to filter

@@ -2,7 +2,7 @@ package kafka
 
 import (
 	"fmt"
-	"gitea.izolight.xyz/gabor/kafkalib/format"
+	"github.com/izolight/kafkalib/format"
 	"regexp"
 
 	"github.com/Shopify/sarama"
