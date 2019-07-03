@@ -2,6 +2,7 @@ package entities_test
 
 import (
 	"encoding/json"
+	. "github.com/izolight/kafkalib/entities"
 	"io/ioutil"
 	"reflect"
 	"testing"
