@@ -2,7 +2,7 @@ package entities
 
 import (
 	"github.com/Shopify/sarama"
-	"github.com/izolight/kafkalib/format"
+	"gitea.izolight.xyz/gabor/kafkalib/format"
 	"strconv"
 )
 
