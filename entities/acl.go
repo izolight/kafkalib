@@ -9,7 +9,7 @@ import (
 type ACL struct {
 	Host           string `json:"host"`
 	Operation      string `json:"operation"`
-	PermissionType string `json:"permission-type"`
+	PermissionType string `json:"permission_type"`
 }
 
 // ACLByPrincipal adds the resource and type to the acl
@@ -243,14 +243,14 @@ var operationToString = map[sarama.AclOperation]string{
 	sarama.AclOperationAll:             "All",
 	sarama.AclOperationRead:            "Read",
 	sarama.AclOperationWrite:           "Write",
-	sarama.AclOperationCreate:          "CreateTopic",
-	sarama.AclOperationDelete:          "DeleteTopic",
+	sarama.AclOperationCreate:          "Create",
+	sarama.AclOperationDelete:          "Delete",
 	sarama.AclOperationAlter:           "Alter",
 	sarama.AclOperationDescribe:        "Describe",
-	sarama.AclOperationClusterAction:   "Cluster Action",
-	sarama.AclOperationDescribeConfigs: "Describe Configs",
-	sarama.AclOperationAlterConfigs:    "Alter Configs",
-	sarama.AclOperationIdempotentWrite: "Idempotent Write",
+	sarama.AclOperationClusterAction:   "ClusterAction",
+	sarama.AclOperationDescribeConfigs: "DescribeConfigs",
+	sarama.AclOperationAlterConfigs:    "AlterConfigs",
+	sarama.AclOperationIdempotentWrite: "IdempotentWrite",
 }
 
 var permissionToString = map[sarama.AclPermissionType]string{
@@ -278,17 +278,17 @@ var permissionToID = map[string]sarama.AclPermissionType{
 
 // operationToID maps a string to a acl operation
 var operationToID = map[string]sarama.AclOperation{
-	"Unknown":          sarama.AclOperationUnknown,
-	"Any":              sarama.AclOperationAny,
-	"All":              sarama.AclOperationAll,
-	"Read":             sarama.AclOperationRead,
-	"Write":            sarama.AclOperationWrite,
-	"CreateTopic":      sarama.AclOperationCreate,
-	"DeleteTopic":      sarama.AclOperationDelete,
-	"Alter":            sarama.AclOperationAlter,
-	"Describe":         sarama.AclOperationDescribe,
-	"Cluster Action":   sarama.AclOperationClusterAction,
-	"Describe Configs": sarama.AclOperationDescribeConfigs,
-	"Alter Configs":    sarama.AclOperationAlterConfigs,
-	"Idempotent Write": sarama.AclOperationIdempotentWrite,
+	"Unknown":         sarama.AclOperationUnknown,
+	"Any":             sarama.AclOperationAny,
+	"All":             sarama.AclOperationAll,
+	"Read":            sarama.AclOperationRead,
+	"Write":           sarama.AclOperationWrite,
+	"Create":          sarama.AclOperationCreate,
+	"Delete":          sarama.AclOperationDelete,
+	"Alter":           sarama.AclOperationAlter,
+	"Describe":        sarama.AclOperationDescribe,
+	"ClusterAction":   sarama.AclOperationClusterAction,
+	"DescribeConfigs": sarama.AclOperationDescribeConfigs,
+	"AlterConfigs":    sarama.AclOperationAlterConfigs,
+	"IdempotentWrite": sarama.AclOperationIdempotentWrite,
 }
