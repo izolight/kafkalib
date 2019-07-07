@@ -197,7 +197,7 @@ func (a *ACLs) UnmarshalSarama(rACLs *sarama.ResourceAcls) error {
 	i := 0
 	for _, ac := range rACLs.Acls {
 		acl := &ACL{
-			Resource:Resource{
+			Resource: Resource{
 				ResourceType: resourceType,
 				ResourceName: rACLs.ResourceName,
 			},

@@ -21,7 +21,34 @@ func TestACL_MarshalSaramaRACL(t *testing.T) {
 		want    *sarama.ResourceAcls
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "simple acl",
+			fields: fields{
+				Principal:      "User:test",
+				PermissionType: PermissionAllow,
+				Operation:      OperationCreate,
+				Host:           "*",
+				Resource: Resource{
+					ResourceName: "test",
+					ResourceType: ResourceTopic,
+				},
+			},
+			want: &sarama.ResourceAcls{
+				Resource: sarama.Resource{
+					ResourceName: "test",
+					ResourceType: sarama.AclResourceTopic,
+				},
+				Acls: []*sarama.Acl{
+					&sarama.Acl{
+						Principal:      "User:test",
+						PermissionType: sarama.AclPermissionAllow,
+						Operation:      sarama.AclOperationCreate,
+						Host:           "*",
+					},
+				},
+			},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -58,7 +85,26 @@ func TestACL_MarshalSaramaACL(t *testing.T) {
 		want    *sarama.Acl
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "simple acl",
+			fields: fields{
+				Principal:      "User:test",
+				PermissionType: PermissionAllow,
+				Operation:      OperationAlter,
+				Host:           "*",
+				Resource: Resource{
+					ResourceName: "test",
+					ResourceType: ResourceTopic,
+				},
+			},
+			want: &sarama.Acl{
+				Principal:      "User:test",
+				PermissionType: sarama.AclPermissionAllow,
+				Operation:      sarama.AclOperationAlter,
+				Host:           "*",
+			},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -88,7 +134,79 @@ func TestACLs_MarshalSaramaPerResource(t *testing.T) {
 		want    *sarama.ResourceAcls
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "two acls",
+			a: ACLs{
+				{
+					Principal:      "User:test",
+					PermissionType: PermissionAllow,
+					Operation:      OperationAlter,
+					Host:           "*",
+					Resource: Resource{
+						ResourceName: "test",
+						ResourceType: ResourceTopic,
+					},
+				},
+				{
+					Principal:      "User:two",
+					PermissionType: PermissionAllow,
+					Operation:      OperationRead,
+					Host:           "*",
+					Resource: Resource{
+						ResourceName: "test",
+						ResourceType: ResourceTopic,
+					},
+				},
+			},
+			want: &sarama.ResourceAcls{
+				Resource: sarama.Resource{
+					ResourceName: "test",
+					ResourceType: sarama.AclResourceTopic,
+				},
+				Acls: []*sarama.Acl{
+					{
+						Principal:      "User:test",
+						PermissionType: sarama.AclPermissionAllow,
+						Operation:      sarama.AclOperationAlter,
+						Host:           "*",
+					},
+					{
+						Principal:      "User:two",
+						PermissionType: sarama.AclPermissionAllow,
+						Operation:      sarama.AclOperationRead,
+						Host:           "*",
+					},
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "two acls with wrong resource",
+			a: ACLs{
+				{
+					Principal:      "User:test",
+					PermissionType: PermissionAllow,
+					Operation:      OperationAlter,
+					Host:           "*",
+					Resource: Resource{
+						ResourceName: "test",
+						ResourceType: ResourceTopic,
+					},
+				},
+				{
+					Principal:      "User:two",
+					PermissionType: PermissionAllow,
+					Operation:      OperationRead,
+					Host:           "*",
+					Resource: Resource{
+						ResourceName: "test-a",
+						ResourceType: ResourceTopic,
+					},
+				},
+			},
+			want:    nil,
+			wantErr: true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
