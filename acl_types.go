@@ -1,7 +1,7 @@
 package kafkalib
 
 // ACLsByPrincipal contains all ACLs per Principal
-type ACLsByPrincipal map[string][]ACL
+type ACLsByPrincipal map[string]ACLs
 
 // ACLsByPrincipalAndResource contains all ACLs per Principal and Resource
 type ACLsByPrincipalAndResource map[string]map[Resource]ACLs

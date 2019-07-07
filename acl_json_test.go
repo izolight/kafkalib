@@ -65,7 +65,7 @@ func Test_abp_MarshalJSON(t *testing.T) {
 		{
 			name: "two acls",
 			a: _abp{
-				"User:test": []ACL{
+				"User:test": ACLs{
 					{
 						Principal:      "User:test",
 						PermissionType: PermissionAllow,
@@ -77,7 +77,7 @@ func Test_abp_MarshalJSON(t *testing.T) {
 						},
 					},
 				},
-				"User:two": []ACL{
+				"User:two": ACLs{
 					{
 						Principal:      "User:two",
 						PermissionType: PermissionAllow,
@@ -159,7 +159,7 @@ func TestACLsByResource_MarshalJSON(t *testing.T) {
 					},
 				},
 			},
-			want:    []byte(`{"Topic_test":[{"principal":"User:test","permission_type":"Allow","operation":"Alter","host":"*","resource_name":"test","resource_type":"Topic"},{"principal":"User:two","permission_type":"Allow","operation":"Read","host":"*","resource_name":"test","resource_type":"Topic"}],"Topic_test2":[{"principal":"User:test","permission_type":"Allow","operation":"Alter","host":"*","resource_name":"test2","resource_type":"Topic"}]}`),
+			want:    []byte(`{"Topic/test":[{"principal":"User:test","permission_type":"Allow","operation":"Alter","host":"*","resource_name":"test","resource_type":"Topic"},{"principal":"User:two","permission_type":"Allow","operation":"Read","host":"*","resource_name":"test","resource_type":"Topic"}],"Topic/test2":[{"principal":"User:test","permission_type":"Allow","operation":"Alter","host":"*","resource_name":"test2","resource_type":"Topic"}]}`),
 			wantErr: false,
 		},
 	}
@@ -237,7 +237,7 @@ func TestACLsByPrincipalAndResource_MarshalJSON(t *testing.T) {
 					},
 				},
 			},
-			want:    []byte(`{"User:test":[{"Topic_test":[{"principal":"User:test","permission_type":"Allow","operation":"Alter","host":"*","resource_name":"test","resource_type":"Topic"}]},{"Topic_test-2":[{"principal":"User:test","permission_type":"Allow","operation":"Read","host":"*","resource_name":"test-2","resource_type":"Topic"}]}],"User:two":[{"Topic_test":[{"principal":"User:two","permission_type":"Allow","operation":"Describe","host":"*","resource_name":"test","resource_type":"Topic"}]}]}`),
+			want:    []byte(`{"User:test":[{"Topic/test":[{"principal":"User:test","permission_type":"Allow","operation":"Alter","host":"*","resource_name":"test","resource_type":"Topic"}]},{"Topic/test-2":[{"principal":"User:test","permission_type":"Allow","operation":"Read","host":"*","resource_name":"test-2","resource_type":"Topic"}]}],"User:two":[{"Topic/test":[{"principal":"User:two","permission_type":"Allow","operation":"Describe","host":"*","resource_name":"test","resource_type":"Topic"}]}]}`),
 			wantErr: false,
 		},
 	}
@@ -312,7 +312,7 @@ func TestACLsByResourceAndPrincipal_MarshalJSON(t *testing.T) {
 					},
 				},
 			},
-			want: []byte(`{"Topic_test":[{"User:test":[{"principal":"User:test","permission_type":"Allow","operation":"Alter","host":"*","resource_name":"test","resource_type":"Topic"}]},{"User:two":[{"principal":"User:two","permission_type":"Allow","operation":"Describe","host":"*","resource_name":"test","resource_type":"Topic"}]}],"Topic_test-2":[{"User:test":[{"principal":"User:test","permission_type":"Allow","operation":"Read","host":"*","resource_name":"test-2","resource_type":"Topic"}]}]}`),
+			want:    []byte(`{"Topic/test":[{"User:test":[{"principal":"User:test","permission_type":"Allow","operation":"Alter","host":"*","resource_name":"test","resource_type":"Topic"}]},{"User:two":[{"principal":"User:two","permission_type":"Allow","operation":"Describe","host":"*","resource_name":"test","resource_type":"Topic"}]}],"Topic/test-2":[{"User:test":[{"principal":"User:test","permission_type":"Allow","operation":"Read","host":"*","resource_name":"test-2","resource_type":"Topic"}]}]}`),
 			wantErr: false,
 		},
 	}
@@ -325,6 +325,106 @@ func TestACLsByResourceAndPrincipal_MarshalJSON(t *testing.T) {
 			}
 			if !json.Valid(got) {
 				t.Errorf("ACLsByResourceAndPrincipal.MarshalJSON() is invalid = %s, want like this %s", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_acls_UnmarshalJSON(t *testing.T) {
+	type args struct {
+		b []byte
+	}
+	tests := []struct {
+		name    string
+		a       _acls
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "two acls",
+			a: _acls{},
+			args: args{
+				b: []byte(`[{"principal":"User:test","permission_type":"Allow","operation":"Alter","host":"*","resource_name":"test","resource_type":"Topic"},{"principal":"User:two","permission_type":"Allow","operation":"Read","host":"*","resource_name":"test","resource_type":"Topic"}]`),
+			},
+			wantErr: false,
+		},
+		{
+			name: "wrong json",
+			a: _acls{},
+			args: args{
+				b: []byte(`{"User:test":[{"principal":"User:test","permission_type":"Allow","operation":"Alter","host":"*","resource_name":"test","resource_type":"Topic"}],"User:two":[{"principal":"User:two","permission_type":"Allow","operation":"Read","host":"*","resource_name":"test","resource_type":"Topic"}]}`),
+			},
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := tt.a.UnmarshalJSON(tt.args.b); (err != nil) != tt.wantErr {
+				t.Errorf("_acls.UnmarshalJSON() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func Test_abp_UnmarshalJSON(t *testing.T) {
+	type args struct {
+		b []byte
+	}
+	tests := []struct {
+		name    string
+		a       _abp
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "two acls",
+			a: _abp{},
+			args: args{
+				b: []byte(`{"User:test":[{"principal":"User:test","permission_type":"Allow","operation":"Alter","host":"*","resource_name":"test","resource_type":"Topic"}],"User:two":[{"principal":"User:two","permission_type":"Allow","operation":"Read","host":"*","resource_name":"test","resource_type":"Topic"}]}`),
+			},
+			wantErr: false,
+		},
+		{
+			name: "wrong json",
+			a: _abp{},
+			args: args{
+				b: []byte(`[{"principal":"User:test","permission_type":"Allow","operation":"Alter","host":"*","resource_name":"test","resource_type":"Topic"},{"principal":"User:two","permission_type":"Allow","operation":"Read","host":"*","resource_name":"test","resource_type":"Topic"}]`),
+			},
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := tt.a.UnmarshalJSON(tt.args.b); (err != nil) != tt.wantErr {
+				t.Errorf("_abp.UnmarshalJSON() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestACLsByResource_UnmarshalJSON(t *testing.T) {
+	type args struct {
+		b []byte
+	}
+	tests := []struct {
+		name    string
+		a       ACLsByResource
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "two acls",
+			a: ACLsByResource{},
+			args: args{
+				[]byte(`{"Topic/test":[{"principal":"User:test","permission_type":"Allow","operation":"Alter","host":"*","resource_name":"test","resource_type":"Topic"},{"principal":"User:two","permission_type":"Allow","operation":"Read","host":"*","resource_name":"test","resource_type":"Topic"}],"Topic/test2":[{"principal":"User:test","permission_type":"Allow","operation":"Alter","host":"*","resource_name":"test2","resource_type":"Topic"}]}`),
+			},
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := tt.a.UnmarshalJSON(tt.args.b); (err != nil) != tt.wantErr {
+				t.Errorf("ACLsByResource.UnmarshalJSON() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}
