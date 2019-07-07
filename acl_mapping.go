@@ -2,84 +2,118 @@ package kafkalib
 
 import "github.com/Shopify/sarama"
 
+const (
+	ResourceUnknown         = "Unknown"
+	ResourceAny             = "Any"
+	ResourceTopic           = "Topic"
+	ResourceGroup           = "Group"
+	ResourceCluster         = "Cluster"
+	ResourceTransactionalID = "TransactionalID"
+
+	OperationUnknown         = "Unknown"
+	OperationAny             = "Any"
+	OperationAll             = "All"
+	OperationRead            = "Read"
+	OperationWrite           = "Write"
+	OperationCreate          = "Create"
+	OperationDelete          = "Delete"
+	OperationAlter           = "Alter"
+	OperationDescribe        = "Describe"
+	OperationClusterAction   = "ClusterAction"
+	OperationDescribeConfigs = "DescribeConfigs"
+	OperationAlterConfigs    = "AlterConfigs"
+	OperationIdempotentWrite = "IdempotentWrite"
+
+	PermissionUnknown = "Unknown"
+	PermissionAny     = "Any"
+	PermissionDeny    = "Deny"
+	PermissionAllow   = "Allow"
+
+	PatternUnknown  = "Unknown"
+	PatternAny      = "Any"
+	PatternMatch    = "Match"
+	PatternLiteral  = "Literal"
+	PatternPrefixed = "Prefixed"
+)
+
 // maps for string conversion
 var resourceTypeToString = map[sarama.AclResourceType]string{
-	sarama.AclResourceUnknown:         "Unknown",
-	sarama.AclResourceAny:             "Any",
-	sarama.AclResourceTopic:           "Topic",
-	sarama.AclResourceGroup:           "Group",
-	sarama.AclResourceCluster:         "Cluster",
-	sarama.AclResourceTransactionalID: "TransactionalID",
+	sarama.AclResourceUnknown:         ResourceUnknown,
+	sarama.AclResourceAny:             ResourceAny,
+	sarama.AclResourceTopic:           ResourceTopic,
+	sarama.AclResourceGroup:           ResourceGroup,
+	sarama.AclResourceCluster:         ResourceCluster,
+	sarama.AclResourceTransactionalID: ResourceTransactionalID,
 }
 
 var operationToString = map[sarama.AclOperation]string{
-	sarama.AclOperationUnknown:         "Unknown",
-	sarama.AclOperationAny:             "Any",
-	sarama.AclOperationAll:             "All",
-	sarama.AclOperationRead:            "Read",
-	sarama.AclOperationWrite:           "Write",
-	sarama.AclOperationCreate:          "Create",
-	sarama.AclOperationDelete:          "Delete",
-	sarama.AclOperationAlter:           "Alter",
-	sarama.AclOperationDescribe:        "Describe",
-	sarama.AclOperationClusterAction:   "ClusterAction",
-	sarama.AclOperationDescribeConfigs: "DescribeConfigs",
-	sarama.AclOperationAlterConfigs:    "AlterConfigs",
-	sarama.AclOperationIdempotentWrite: "IdempotentWrite",
+	sarama.AclOperationUnknown:         OperationUnknown,
+	sarama.AclOperationAny:             OperationAny,
+	sarama.AclOperationAll:             OperationAll,
+	sarama.AclOperationRead:            OperationRead,
+	sarama.AclOperationWrite:           OperationWrite,
+	sarama.AclOperationCreate:          OperationCreate,
+	sarama.AclOperationDelete:          OperationDelete,
+	sarama.AclOperationAlter:           OperationAlter,
+	sarama.AclOperationDescribe:        OperationDescribe,
+	sarama.AclOperationClusterAction:   OperationClusterAction,
+	sarama.AclOperationDescribeConfigs: OperationDescribeConfigs,
+	sarama.AclOperationAlterConfigs:    OperationAlterConfigs,
+	sarama.AclOperationIdempotentWrite: OperationIdempotentWrite,
 }
 
 var permissionToString = map[sarama.AclPermissionType]string{
-	sarama.AclPermissionUnknown: "Unknown",
-	sarama.AclPermissionAny:     "Any",
-	sarama.AclPermissionDeny:    "Deny",
-	sarama.AclPermissionAllow:   "Allow",
+	sarama.AclPermissionUnknown: PermissionUnknown,
+	sarama.AclPermissionAny:     PermissionAny,
+	sarama.AclPermissionDeny:    PermissionDeny,
+	sarama.AclPermissionAllow:   PermissionAllow,
 }
 
-var resourcePatternToString = map[sarama.AclResourcePatternType]string {
-	sarama.AclPatternUnknown: "Unknown",
-	sarama.AclPatternAny: "Any",
-	sarama.AclPatternMatch: "Match",
-	sarama.AclPatternLiteral: "Literal",
-	sarama.AclPatternPrefixed: "Prefixed",
+var resourcePatternToString = map[sarama.AclResourcePatternType]string{
+	sarama.AclPatternUnknown:  PatternUnknown,
+	sarama.AclPatternAny:      PatternAny,
+	sarama.AclPatternMatch:    PatternMatch,
+	sarama.AclPatternLiteral:  PatternLiteral,
+	sarama.AclPatternPrefixed: PatternPrefixed,
 }
 
 var resourceTypeToID = map[string]sarama.AclResourceType{
-	"Unknown":         sarama.AclResourceUnknown,
-	"Any":             sarama.AclResourceAny,
-	"Topic":           sarama.AclResourceTopic,
-	"Group":           sarama.AclResourceGroup,
-	"Cluster":         sarama.AclResourceCluster,
-	"TransactionalID": sarama.AclResourceTransactionalID,
+	ResourceUnknown:         sarama.AclResourceUnknown,
+	ResourceAny:             sarama.AclResourceAny,
+	ResourceTopic:           sarama.AclResourceTopic,
+	ResourceGroup:           sarama.AclResourceGroup,
+	ResourceCluster:         sarama.AclResourceCluster,
+	ResourceTransactionalID: sarama.AclResourceTransactionalID,
 }
 
 var permissionToID = map[string]sarama.AclPermissionType{
-	"Unknown": sarama.AclPermissionUnknown,
-	"Any":     sarama.AclPermissionAny,
-	"Deny":    sarama.AclPermissionDeny,
-	"Allow":   sarama.AclPermissionAllow,
+	PermissionUnknown: sarama.AclPermissionUnknown,
+	PermissionAny:     sarama.AclPermissionAny,
+	PermissionDeny:    sarama.AclPermissionDeny,
+	PermissionAllow:   sarama.AclPermissionAllow,
 }
 
 // operationToID maps a string to a acl operation
 var operationToID = map[string]sarama.AclOperation{
-	"Unknown":         sarama.AclOperationUnknown,
-	"Any":             sarama.AclOperationAny,
-	"All":             sarama.AclOperationAll,
-	"Read":            sarama.AclOperationRead,
-	"Write":           sarama.AclOperationWrite,
-	"Create":          sarama.AclOperationCreate,
-	"Delete":          sarama.AclOperationDelete,
-	"Alter":           sarama.AclOperationAlter,
-	"Describe":        sarama.AclOperationDescribe,
-	"ClusterAction":   sarama.AclOperationClusterAction,
-	"DescribeConfigs": sarama.AclOperationDescribeConfigs,
-	"AlterConfigs":    sarama.AclOperationAlterConfigs,
-	"IdempotentWrite": sarama.AclOperationIdempotentWrite,
+	OperationUnknown:         sarama.AclOperationUnknown,
+	OperationAny:             sarama.AclOperationAny,
+	OperationAll:             sarama.AclOperationAll,
+	OperationRead:            sarama.AclOperationRead,
+	OperationWrite:           sarama.AclOperationWrite,
+	OperationCreate:          sarama.AclOperationCreate,
+	OperationDelete:          sarama.AclOperationDelete,
+	OperationAlter:           sarama.AclOperationAlter,
+	OperationDescribe:        sarama.AclOperationDescribe,
+	OperationClusterAction:   sarama.AclOperationClusterAction,
+	OperationDescribeConfigs: sarama.AclOperationDescribeConfigs,
+	OperationAlterConfigs:    sarama.AclOperationAlterConfigs,
+	OperationIdempotentWrite: sarama.AclOperationIdempotentWrite,
 }
 
 var resourcePatternToID = map[string]sarama.AclResourcePatternType{
-	"Unknown": sarama.AclPatternUnknown,
-	"Any": sarama.AclPatternAny,
-	"Match": sarama.AclPatternMatch,
-	"Literal": sarama.AclPatternLiteral,
-	"Prefixed": sarama.AclPatternPrefixed,
+	PatternUnknown:  sarama.AclPatternUnknown,
+	PatternAny:      sarama.AclPatternAny,
+	PatternMatch:    sarama.AclPatternMatch,
+	PatternLiteral:  sarama.AclPatternLiteral,
+	PatternPrefixed: sarama.AclPatternPrefixed,
 }
