@@ -1,9 +1,8 @@
-package kafka
+package kafkalib
 
 import (
 	"fmt"
 	"github.com/Shopify/sarama"
-	"github.com/izolight/kafkalib/format"
 )
 
 // GetACLs returns ACLs according to filter

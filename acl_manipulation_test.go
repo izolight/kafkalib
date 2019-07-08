@@ -1,8 +1,8 @@
-package kafka_test
+package kafkalib_test
 
 import (
 	"github.com/Shopify/sarama"
-	"github.com/izolight/kafkalib/kafka"
+	"github.com/izolight/kafkalib/client_test"
 	"testing"
 )
 
@@ -11,7 +11,7 @@ func TestACL_Get(t *testing.T) {
 }
 
 func TestACL_GetAll(t *testing.T) {
-	client := NewTestClient()
+	client := client_test.NewTestClient()
 	testCases := []struct {
 		success bool
 	}{
@@ -19,7 +19,7 @@ func TestACL_GetAll(t *testing.T) {
 		{false},
 	}
 	for _, tc := range testCases {
-		c := kafka.Conn{
+		c := Conn{
 			AdminClient: client,
 		}
 		filter := &sarama.AclFilter{
@@ -41,7 +41,7 @@ func TestACL_GetAll(t *testing.T) {
 }
 
 func TestACL_Create(t *testing.T) {
-	client := NewTestClient()
+	client := client_test.NewTestClient()
 	testCases := []struct {
 		acl     sarama.AclCreation
 		success bool
@@ -60,7 +60,7 @@ func TestACL_Create(t *testing.T) {
 		},
 	}
 	for _, tc := range testCases {
-		c := kafka.Conn{
+		c := Conn{
 			AdminClient: client,
 		}
 		err := c.CreateACL(&tc.acl)
