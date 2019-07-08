@@ -1,4 +1,4 @@
-package kafka_test
+package kafkalib_test
 
 import (
 	"fmt"
@@ -8,6 +8,10 @@ import (
 type testClient struct {
 	topics map[string]sarama.TopicDetail
 	acls   []sarama.ResourceAcls
+}
+
+func (t *testClient) DeleteConsumerGroup(group string) error {
+	panic("implement me")
 }
 
 // NewTestClient creates a client that is used in tests

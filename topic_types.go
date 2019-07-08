@@ -3,8 +3,6 @@ package kafkalib
 import (
 	"bytes"
 	"fmt"
-	"github.com/Shopify/sarama"
-	"github.com/izolight/kafkalib/format"
 	"text/tabwriter"
 )
 
@@ -46,7 +44,7 @@ func (t Topic) MarshalText() ([]byte, error) {
 
 // TODO: consolidate with format package
 
-func isConsumer(operations []format.Operation) bool {
+/*func isConsumer(operations []format.Operation) bool {
 	read := false
 	describe := false
 	for _, o := range operations {
@@ -73,4 +71,4 @@ func isProducer(operations []format.Operation) bool {
 		}
 	}
 	return write && describe && create
-}
+}*/
