@@ -88,23 +88,23 @@ func (a ACLsByResourceAndPrincipal) MarshalJSON() ([]byte, error) {
 	resources := len(a)
 	i := 1
 	for r := range a {
-		buffer.WriteString(`"` + r.ResourceType + `/` + r.ResourceName + `":[`)
+		buffer.WriteString(`"` + r.ResourceType + `/` + r.ResourceName + `":{`)
 		principals := len(a[r])
 		j := 1
 		for p := range a[r] {
-			buffer.WriteString(`{"` + p + `":`)
+			buffer.WriteString(`"` + p + `":`)
 			b, err := json.Marshal(a[r][p])
 			if err != nil {
 				return nil, err
 			}
 			buffer.Write(b)
-			buffer.WriteString(`}`)
+			buffer.WriteString(``)
 			if j != principals {
 				buffer.WriteString(`,`)
 			}
 			j++
 		}
-		buffer.WriteString(`]`)
+		buffer.WriteString(`}`)
 		if i != resources {
 			buffer.WriteString(`,`)
 		}
@@ -137,5 +137,22 @@ func (a ACLsByResource) UnmarshalJSON(b []byte) error {
 }
 
 func (a ACLsByResourceAndPrincipal) UnmarshalJSON(b []byte) error {
+	tmp := make(map[string]map[string]ACLs)
+	err := json.Unmarshal(b, &tmp)
+	if err != nil {
+		return err
+	}
+
+	for r := range tmp {
+		parts := strings.Split(r, "/")
+		if len(parts) != 2 {
+			return fmt.Errorf("returned more than two parts when splitting at '/': %s", parts)
+		}
+		a[Resource{
+			ResourceType: parts[0],
+			ResourceName: parts[1],
+		}] = tmp[r]
+	}
+
 	return nil
 }
