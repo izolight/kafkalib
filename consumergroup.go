@@ -15,17 +15,17 @@ type ConsumerGroup struct {
 func (c ConsumerGroup) MarshalText() ([]byte, error) {
 	buf := bytes.Buffer{}
 	w := tabwriter.NewWriter(&buf, 2, 8, 1, '\t', 0)
-	_, err := w.Write([]byte(`ConsumerGroup\tPrincipal\tHost\tOperation\tPermission\n`))
+	_, err := w.Write([]byte(`ConsumerGroup\tACL\n`))
 	if err != nil {
 		return nil, err
 	}
-	_, err = fmt.Fprintf(w, "%s\t\t\t\t\n", c.Name)
+	_, err = fmt.Fprintf(w, "%s\t\n", c.Name)
 	if err != nil {
 		return nil, err
 	}
 	for _, acl := range c.ACLs {
-		_, err = fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\n",
-			"", acl.Principal, acl.Host, acl.Operation, acl.PermissionType)
+		_, err = fmt.Fprintf(w, "%s\t%s\n",
+			"", acl)
 		if err != nil {
 			return nil, err
 		}
