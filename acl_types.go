@@ -26,8 +26,8 @@ type ACL struct {
 }
 
 func (a ACL) String() string {
-	return fmt.Sprintf("Principal %s is % Operation %s from Host %s on Resource %s/%s",
-		a.Principal, a.PermissionType, a.Operation, a.Host, a.ResourceType, a.ResourceName)
+	return fmt.Sprintf("Principal %s is %s Operation %s from Host %s on Resource %s",
+		a.Principal, a.PermissionType, a.Operation, a.Host, a.Resource)
 }
 
 type ACLs []ACL
@@ -36,4 +36,8 @@ type ACLs []ACL
 type Resource struct {
 	ResourceName string `json:"resource_name"`
 	ResourceType string `json:"resource_type"`
+}
+
+func (r Resource) String() string {
+	return fmt.Sprintf("%s/%s", r.ResourceType, r.ResourceName)
 }
