@@ -56,23 +56,22 @@ func (a ACLsByPrincipalAndResource) MarshalJSON() ([]byte, error) {
 	principals := len(a)
 	i := 1
 	for p := range a {
-		buffer.WriteString(`"` + p + `":[`)
+		buffer.WriteString(`"` + p + `":{`)
 		resources := len(a[p])
 		j := 1
 		for r := range a[p] {
-			buffer.WriteString(`{"` + r.ResourceType + `/` + r.ResourceName + `":`)
+			buffer.WriteString(`"` + r.ResourceType + `/` + r.ResourceName + `":`)
 			b, err := json.Marshal(a[p][r])
 			if err != nil {
 				return nil, err
 			}
 			buffer.Write(b)
-			buffer.WriteString(`}`)
 			if j != resources {
 				buffer.WriteString(`,`)
 			}
 			j++
 		}
-		buffer.WriteString(`]`)
+		buffer.WriteString(`}`)
 		if i != principals {
 			buffer.WriteString(`,`)
 		}
@@ -98,7 +97,6 @@ func (a ACLsByResourceAndPrincipal) MarshalJSON() ([]byte, error) {
 				return nil, err
 			}
 			buffer.Write(b)
-			buffer.WriteString(``)
 			if j != principals {
 				buffer.WriteString(`,`)
 			}
@@ -110,7 +108,6 @@ func (a ACLsByResourceAndPrincipal) MarshalJSON() ([]byte, error) {
 		}
 		i++
 	}
-
 
 	buffer.WriteString(`}`)
 	return buffer.Bytes(), nil
@@ -152,6 +149,33 @@ func (a ACLsByResourceAndPrincipal) UnmarshalJSON(b []byte) error {
 			ResourceType: parts[0],
 			ResourceName: parts[1],
 		}] = tmp[r]
+	}
+
+	return nil
+}
+
+func (a ACLsByPrincipalAndResource) UnmarshalJSON(b []byte) error {
+	tmp := make(map[string]map[string]ACLs)
+	err := json.Unmarshal(b, &tmp)
+	if err != nil {
+		return err
+	}
+
+	for p := range tmp {
+		for r := range tmp[p] {
+			parts := strings.Split(r, "/")
+			if len(parts) != 2 {
+				return fmt.Errorf("returned more than two parts when splitting at '/': %s", parts)
+			}
+			resource := Resource{
+				ResourceType: parts[0],
+				ResourceName: parts[1],
+			}
+			if _, ok := a[p]; !ok {
+				a[p] = make(map[Resource]ACLs)
+			}
+			a[p][resource] = tmp[p][r]
+		}
 	}
 
 	return nil

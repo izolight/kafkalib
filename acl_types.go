@@ -30,4 +30,3 @@ type Resource struct {
 	ResourceName string `json:"resource_name"`
 	ResourceType string `json:"resource_type"`
 }
-
