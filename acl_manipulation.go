@@ -6,13 +6,18 @@ import (
 )
 
 // GetACLs returns ACLs according to filter
-func (c Conn) GetACLs(filter *sarama.AclFilter) (*format.ACLs, error) {
+func (c Conn) GetACLs(filter *sarama.AclFilter) (*ACLsByResource, error) {
 	var err error
 	acls, err := c.AdminClient.ListAcls(*filter)
 	if err != nil {
 		return nil, fmt.Errorf("Error getting acls: %s", err)
 	}
-	return format.FromResourceAcls(acls), nil
+	a := &ACLsByResource{}
+	err = a.UnmarshalResourceAcls(acls)
+	if err != nil {
+		return nil, err
+	}
+	return a, nil
 }
 
 // CreateACL creates a new acl

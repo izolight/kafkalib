@@ -201,7 +201,7 @@ func (a *ACL) UnmarshalSarama(acl *sarama.Acl) error {
 }
 
 // UnmarshalResourceAcls converts a list of sarama.ResourceAcls to ACLsByResource
-func (a ACLsByResource) UnmarshalResourceAcls(rACLs []*sarama.ResourceAcls) error {
+func (a ACLsByResource) UnmarshalResourceAcls(rACLs []sarama.ResourceAcls) error {
 	for _, rACL := range rACLs {
 		resourceType, ok := resourceTypeToString[rACL.ResourceType]
 		if !ok {
