@@ -233,13 +233,13 @@ func TestACLsByPrincipal_MarshalSarama(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := tt.a.MarshalSarama()
+			got, err := tt.a.MarshalResourceAcls()
 			if (err != nil) != tt.wantErr {
-				t.Errorf("ACLsByPrincipal.MarshalSarama() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("ACLsByPrincipal.MarshalResourceAcls() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("ACLsByPrincipal.MarshalSarama() = %v, want %v", got, tt.want)
+				t.Errorf("ACLsByPrincipal.MarshalResourceAcls() = %v, want %v", got, tt.want)
 			}
 		})
 	}
@@ -256,13 +256,13 @@ func TestACLsByPrincipalAndResource_MarshalSarama(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := tt.a.MarshalSarama()
+			got, err := tt.a.MarshalResourceAcls()
 			if (err != nil) != tt.wantErr {
-				t.Errorf("ACLsByPrincipalAndResource.MarshalSarama() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("ACLsByPrincipalAndResource.MarshalResourceAcls() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("ACLsByPrincipalAndResource.MarshalSarama() = %v, want %v", got, tt.want)
+				t.Errorf("ACLsByPrincipalAndResource.MarshalResourceAcls() = %v, want %v", got, tt.want)
 			}
 		})
 	}
@@ -279,13 +279,13 @@ func TestACLsByResource_MarshalSarama(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := tt.a.MarshalSarama()
+			got, err := tt.a.MarshalResourceAcls()
 			if (err != nil) != tt.wantErr {
-				t.Errorf("ACLsByResource.MarshalSarama() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("ACLsByResource.MarshalResourceAcls() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("ACLsByResource.MarshalSarama() = %v, want %v", got, tt.want)
+				t.Errorf("ACLsByResource.MarshalResourceAcls() = %v, want %v", got, tt.want)
 			}
 		})
 	}
@@ -302,13 +302,13 @@ func TestACLsByResourceAndPrincipal_MarshalSarama(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := tt.a.MarshalSarama()
+			got, err := tt.a.MarshalResourceAcls()
 			if (err != nil) != tt.wantErr {
-				t.Errorf("ACLsByResourceAndPrincipal.MarshalSarama() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("ACLsByResourceAndPrincipal.MarshalResourceAcls() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("ACLsByResourceAndPrincipal.MarshalSarama() = %v, want %v", got, tt.want)
+				t.Errorf("ACLsByResourceAndPrincipal.MarshalResourceAcls() = %v, want %v", got, tt.want)
 			}
 		})
 	}
@@ -329,7 +329,7 @@ func TestACLs_UnmarshalSarama(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if err := tt.a.UnmarshalSarama(tt.args.rACLs); (err != nil) != tt.wantErr {
-				t.Errorf("ACLs.UnmarshalSarama() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("ACLs.UnmarshalResourceAcls() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}
@@ -364,7 +364,7 @@ func TestACL_UnmarshalSarama(t *testing.T) {
 				Resource:       tt.fields.Resource,
 			}
 			if err := a.UnmarshalSarama(tt.args.acl); (err != nil) != tt.wantErr {
-				t.Errorf("ACL.UnmarshalSarama() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("ACL.UnmarshalResourceAcls() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}
@@ -384,8 +384,8 @@ func TestACLsByResource_UnmarshalSarama(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := tt.a.UnmarshalSarama(tt.args.rACLs); (err != nil) != tt.wantErr {
-				t.Errorf("ACLsByResource.UnmarshalSarama() error = %v, wantErr %v", err, tt.wantErr)
+			if err := tt.a.UnmarshalResourceAcls(tt.args.rACLs); (err != nil) != tt.wantErr {
+				t.Errorf("ACLsByResource.UnmarshalResourceAcls() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}
@@ -405,8 +405,8 @@ func TestACLsByResourceAndPrincipal_UnmarshalSarama(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := tt.a.UnmarshalSarama(tt.args.rACLs); (err != nil) != tt.wantErr {
-				t.Errorf("ACLsByResourceAndPrincipal.UnmarshalSarama() error = %v, wantErr %v", err, tt.wantErr)
+			if err := tt.a.UnmarshalResourceAcls(tt.args.rACLs); (err != nil) != tt.wantErr {
+				t.Errorf("ACLsByResourceAndPrincipal.UnmarshalResourceAcls() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}
@@ -426,8 +426,8 @@ func TestACLsByPrincipal_UnmarshalSarama(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := tt.a.UnmarshalSarama(tt.args.rACLs); (err != nil) != tt.wantErr {
-				t.Errorf("ACLsByPrincipal.UnmarshalSarama() error = %v, wantErr %v", err, tt.wantErr)
+			if err := tt.a.UnmarshalResourceAcls(tt.args.rACLs); (err != nil) != tt.wantErr {
+				t.Errorf("ACLsByPrincipal.UnmarshalResourceAcls() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}
@@ -447,8 +447,8 @@ func TestACLsByPrincipalAndResource_UnmarshalSarama(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := tt.a.UnmarshalSarama(tt.args.rACLs); (err != nil) != tt.wantErr {
-				t.Errorf("ACLsByPrincipalAndResource.UnmarshalSarama() error = %v, wantErr %v", err, tt.wantErr)
+			if err := tt.a.UnmarshalResourceAcls(tt.args.rACLs); (err != nil) != tt.wantErr {
+				t.Errorf("ACLsByPrincipalAndResource.UnmarshalResourceAcls() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}

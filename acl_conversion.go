@@ -54,7 +54,7 @@ func (a ACL) MarshalSaramaACL() (*sarama.Acl, error) {
 	return acl, nil
 }
 
-// MarshalSarama converts a list of ACL(with same resource) to sarama.ResourceAcls
+// MarshalResourceAcls converts a list of ACL(with same resource) to sarama.ResourceAcls
 func (a ACLs) MarshalSaramaPerResource() (*sarama.ResourceAcls, error) {
 	resourceType, ok := resourceTypeToID[a[0].ResourceType]
 	if !ok {
@@ -88,8 +88,8 @@ func (a ACLs) MarshalSaramaPerResource() (*sarama.ResourceAcls, error) {
 	return rACLs, nil
 }
 
-// MarshalSarama converts ACLsByPrincipal to a list of sarama.ResourceAcls
-func (a ACLsByPrincipal) MarshalSarama() ([]*sarama.ResourceAcls, error) {
+// MarshalResourceAcls converts ACLsByPrincipal to a list of sarama.ResourceAcls
+func (a ACLsByPrincipal) MarshalResourceAcls() ([]*sarama.ResourceAcls, error) {
 	// convert to ACLsByResource for more efficiency
 	abr := make(ACLsByResource)
 	for p := range a {
@@ -98,11 +98,11 @@ func (a ACLsByPrincipal) MarshalSarama() ([]*sarama.ResourceAcls, error) {
 		}
 	}
 
-	return abr.MarshalSarama()
+	return abr.MarshalResourceAcls()
 }
 
-// MarshalSarama converts ACLsByPrincipalAndResource to a list of sarama.ResourceAcls
-func (a ACLsByPrincipalAndResource) MarshalSarama() ([]*sarama.ResourceAcls, error) {
+// MarshalResourceAcls converts ACLsByPrincipalAndResource to a list of sarama.ResourceAcls
+func (a ACLsByPrincipalAndResource) MarshalResourceAcls() ([]*sarama.ResourceAcls, error) {
 	// convert to ACLsByResource for more efficiency
 	abr := make(ACLsByResource)
 	for p := range a {
@@ -111,11 +111,11 @@ func (a ACLsByPrincipalAndResource) MarshalSarama() ([]*sarama.ResourceAcls, err
 		}
 	}
 
-	return abr.MarshalSarama()
+	return abr.MarshalResourceAcls()
 }
 
-// MarshalSarama converts ACLsByResource to a list of sarama.ResourceAcls
-func (a ACLsByResource) MarshalSarama() ([]*sarama.ResourceAcls, error) {
+// MarshalResourceAcls converts ACLsByResource to a list of sarama.ResourceAcls
+func (a ACLsByResource) MarshalResourceAcls() ([]*sarama.ResourceAcls, error) {
 	rACLs := make([]*sarama.ResourceAcls, len(a))
 	i := 0
 	for r := range a {
@@ -129,8 +129,8 @@ func (a ACLsByResource) MarshalSarama() ([]*sarama.ResourceAcls, error) {
 	return rACLs, nil
 }
 
-// MarshalSarama converts ACLsByResourceAndPrincipal to a list of sarama.ResourceAcls
-func (a ACLsByResourceAndPrincipal) MarshalSarama() ([]*sarama.ResourceAcls, error) {
+// MarshalResourceAcls converts ACLsByResourceAndPrincipal to a list of sarama.ResourceAcls
+func (a ACLsByResourceAndPrincipal) MarshalResourceAcls() ([]*sarama.ResourceAcls, error) {
 	rACLs := make([]*sarama.ResourceAcls, len(a))
 	i := 0
 	for r := range a {
@@ -200,8 +200,8 @@ func (a *ACL) UnmarshalSarama(acl *sarama.Acl) error {
 	return nil
 }
 
-// UnmarshalSarama converts a list of sarama.ResourceAcls to ACLsByResource
-func (a ACLsByResource) UnmarshalSarama(rACLs []*sarama.ResourceAcls) error {
+// UnmarshalResourceAcls converts a list of sarama.ResourceAcls to ACLsByResource
+func (a ACLsByResource) UnmarshalResourceAcls(rACLs []*sarama.ResourceAcls) error {
 	for _, rACL := range rACLs {
 		resourceType, ok := resourceTypeToString[rACL.ResourceType]
 		if !ok {
@@ -221,8 +221,8 @@ func (a ACLsByResource) UnmarshalSarama(rACLs []*sarama.ResourceAcls) error {
 	return nil
 }
 
-// UnmarshalSarama converts a list of sarama.ResourceAcls to ACLsByResourceAndPrincipal
-func (a ACLsByResourceAndPrincipal) UnmarshalSarama(rACLs []*sarama.ResourceAcls) error {
+// UnmarshalResourceAcls converts a list of sarama.ResourceAcls to ACLsByResourceAndPrincipal
+func (a ACLsByResourceAndPrincipal) UnmarshalResourceAcls(rACLs []*sarama.ResourceAcls) error {
 	for _, rACL := range rACLs {
 		resourceType, ok := resourceTypeToString[rACL.ResourceType]
 		if !ok {
@@ -247,7 +247,7 @@ func (a ACLsByResourceAndPrincipal) UnmarshalSarama(rACLs []*sarama.ResourceAcls
 	return nil
 }
 
-func (a ACLsByPrincipal) UnmarshalSarama(rACLs []*sarama.ResourceAcls) error {
+func (a ACLsByPrincipal) UnmarshalResourceAcls(rACLs []*sarama.ResourceAcls) error {
 	for _, rACL := range rACLs {
 		resourceType, ok := resourceTypeToString[rACL.ResourceType]
 		if !ok {
@@ -272,7 +272,7 @@ func (a ACLsByPrincipal) UnmarshalSarama(rACLs []*sarama.ResourceAcls) error {
 	return nil
 }
 
-func (a ACLsByPrincipalAndResource) UnmarshalSarama(rACLs []*sarama.ResourceAcls) error {
+func (a ACLsByPrincipalAndResource) UnmarshalResourceAcls(rACLs []*sarama.ResourceAcls) error {
 	for _, rACL := range rACLs {
 		resourceType, ok := resourceTypeToString[rACL.ResourceType]
 		if !ok {
