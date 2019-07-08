@@ -1,5 +1,7 @@
 package kafkalib
 
+import "fmt"
+
 // ACLsByPrincipal contains all ACLs per Principal
 type ACLsByPrincipal map[string]ACLs
 
@@ -21,6 +23,11 @@ type ACL struct {
 	Operation      string `json:"operation"`
 	Host           string `json:"host"`
 	Resource
+}
+
+func (a ACL) String() string {
+	return fmt.Sprintf("Principal %s is % Operation %s from Host %s on Resource %s/%s",
+		a.Principal, a.PermissionType, a.Operation, a.Host, a.ResourceType, a.ResourceName)
 }
 
 type ACLs []ACL

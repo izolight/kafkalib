@@ -24,10 +24,10 @@ const (
 	OperationAlterConfigs    = "AlterConfigs"
 	OperationIdempotentWrite = "IdempotentWrite"
 
-	PermissionUnknown = "Unknown"
-	PermissionAny     = "Any"
-	PermissionDeny    = "Deny"
-	PermissionAllow   = "Allow"
+	PermissionUnknown = "unknown"
+	PermissionAny     = "any"
+	PermissionDeny    = "denied"
+	PermissionAllow   = "allowed"
 
 	PatternUnknown  = "Unknown"
 	PatternAny      = "Any"
