@@ -117,8 +117,8 @@ func (a ACLsByResourceAndPrincipal) MarshalJSON() ([]byte, error) {
 }
 
 func (a ACLsByResource) UnmarshalJSON(b []byte) error {
-	tmp := map[string]ACLs{}
-	err := json.Unmarshal(b, tmp)
+	tmp := make(map[string]ACLs)
+	err := json.Unmarshal(b, &tmp)
 	if err != nil {
 		return err
 	}
