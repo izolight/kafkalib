@@ -1,14 +1,13 @@
-package kafka_test
+package kafkalib_test
 
 import (
+	"github.com/Shopify/sarama"
+	"github.com/izolight/kafkalib"
 	"github.com/izolight/kafkalib/kafka"
 	"testing"
-
-	"github.com/Shopify/sarama"
 )
-
 func TestTopic_GetAll(t *testing.T) {
-	client := NewTestClient()
+	client := kafkalib.NewTestClient()
 	testCases := []struct {
 		success bool
 	}{
@@ -16,7 +15,7 @@ func TestTopic_GetAll(t *testing.T) {
 		{false},
 	}
 	for _, tc := range testCases {
-		c := kafka.Conn{
+		c := kafkalib.Conn{
 			AdminClient: client,
 		}
 		if !tc.success {
@@ -36,7 +35,7 @@ func TestTopic_GetAll(t *testing.T) {
 }
 
 func TestTopic_Get(t *testing.T) {
-	client := NewTestClient()
+	client := kafkalib.NewTestClient()
 	testCases := []struct {
 		name    string
 		exists  bool
@@ -47,7 +46,7 @@ func TestTopic_Get(t *testing.T) {
 		{"simpleTopic", true, false},
 	}
 	for _, tc := range testCases {
-		c := kafka.Conn{
+		c := kafkalib.Conn{
 			AdminClient: client,
 		}
 		if !tc.success {
@@ -64,11 +63,11 @@ func TestTopic_Get(t *testing.T) {
 }
 
 func TestTopic_Create(t *testing.T) {
-	client := NewTestClient()
+	client := kafkalib.NewTestClient()
 	testCases := []struct {
 		name       string
-		partitions int32
-		replicas   int16
+		partitions int
+		replicas   int
 		create     bool
 		success    bool
 	}{
@@ -77,16 +76,14 @@ func TestTopic_Create(t *testing.T) {
 		{"newTopic", 2, 1, true, false},
 	}
 	for _, tc := range testCases {
-		c := kafka.Conn{
+		c := kafkalib.Conn{
 			AdminClient: client,
 		}
 		if tc.create {
-			newTopic := kafka.NewTopic{
-				tc.name,
-				sarama.TopicDetail{
-					NumPartitions:     tc.partitions,
-					ReplicationFactor: tc.replicas,
-				},
+			newTopic := kafkalib.Topic{
+				Name: tc.name,
+				Partitions: tc.partitions,
+				ReplicationFactor: tc.replicas,
 			}
 			err := c.CreateTopic(newTopic)
 			if err != nil && tc.success {
@@ -104,7 +101,7 @@ func TestTopic_Create(t *testing.T) {
 }
 
 func TestTopic_Delete(t *testing.T) {
-	client := NewTestClient()
+	client := kafkalib.NewTestClient()
 	testCases := []struct {
 		name   string
 		create bool
@@ -113,16 +110,14 @@ func TestTopic_Delete(t *testing.T) {
 		{"newTopicDontCreate", false},
 	}
 	for _, tc := range testCases {
-		c := kafka.Conn{
+		c := kafkalib.Conn{
 			AdminClient: client,
 		}
 		if tc.create {
-			newTopic := kafka.NewTopic{
-				tc.name,
-				sarama.TopicDetail{
-					NumPartitions:     1,
-					ReplicationFactor: 1,
-				},
+			newTopic := kafkalib.Topic{
+				Name: tc.name,
+				Partitions: 1,
+				ReplicationFactor: 1,
 			}
 			err := c.CreateTopic(newTopic)
 			if err != nil {
@@ -139,3 +134,4 @@ func TestTopic_Delete(t *testing.T) {
 		}
 	}
 }
+
