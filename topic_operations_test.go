@@ -1,9 +1,7 @@
 package kafkalib_test
 
 import (
-	"github.com/Shopify/sarama"
 	"github.com/izolight/kafkalib"
-	"github.com/izolight/kafkalib/kafka"
 	"testing"
 )
 func TestTopic_GetAll(t *testing.T) {
