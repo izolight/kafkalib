@@ -20,7 +20,6 @@ func (c Conn) GetAllTopics() (Topics, error) {
 }
 
 // GetTopic returns the topic defined in the Name of the client
-
 func (c Conn) GetTopic(filter string) (Topics, error) {
 	all, err := c.AdminClient.ListTopics()
 	if err != nil {
@@ -41,4 +40,22 @@ func (c Conn) GetTopic(filter string) (Topics, error) {
 		return t, nil
 	}
 	return nil, fmt.Errorf("Topic %s not found", filter)
+}
+
+// CreateTopic creates the topic defined in the TopicClient
+func (c Conn) CreateTopic(topic Topic) error {
+	s, err := topic.MarshallSarama()
+	if err != nil {
+		return fmt.Errorf("Error converting topic: %s", err)
+	}
+	err = c.AdminClient.CreateTopic(topic.Name, s, false)
+	if err != nil {
+		return fmt.Errorf("Error creating topic: %s", err)
+	}
+	return nil
+}
+
+// DeleteTopic deletes a topic
+func (c Conn) DeleteTopic(topic string) error {
+	return c.AdminClient.DeleteTopic(topic)
 }
