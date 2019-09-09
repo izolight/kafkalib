@@ -15,6 +15,8 @@ type Topic struct {
 	ACLs              []ACLs `json:"acls,omitempty"`
 }
 
+type Topics []Topic
+
 func (t Topic) MarshalText() ([]byte, error) {
 	buf := bytes.Buffer{}
 	w := tabwriter.NewWriter(&buf, 2, 8, 1, '\t', 0)
