@@ -38,3 +38,17 @@ func (c ConsumerGroup) MarshalText() ([]byte, error) {
 	text := buf.Bytes()
 	return text, nil
 }
+
+func (c Conn) GetAllConsumerGroups() ([]ConsumerGroup, error) {
+	groups, err := c.AdminClient.ListConsumerGroups()
+	if err != nil {
+		return nil, fmt.Errorf("Error getting all Consumergroups: %s", err)
+	}
+	g := []ConsumerGroup{}
+	for group := range groups {
+		g = append(g, ConsumerGroup{
+			Name: group,
+		})
+	}
+	return g, nil
+}
