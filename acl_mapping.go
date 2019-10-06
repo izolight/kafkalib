@@ -93,8 +93,8 @@ var permissionToID = map[string]sarama.AclPermissionType{
 	PermissionAllow:   sarama.AclPermissionAllow,
 }
 
-// operationToID maps a string to a acl operation
-var operationToID = map[string]sarama.AclOperation{
+// OperationToID maps a string to a acl operation
+var OperationToID = map[string]sarama.AclOperation{
 	OperationUnknown:         sarama.AclOperationUnknown,
 	OperationAny:             sarama.AclOperationAny,
 	OperationAll:             sarama.AclOperationAll,

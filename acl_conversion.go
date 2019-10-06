@@ -45,7 +45,7 @@ func (a ACL) MarshalSaramaACL() (*sarama.Acl, error) {
 	}
 	acl.PermissionType = permissionType
 
-	operation, ok := operationToID[a.Operation]
+	operation, ok := OperationToID[a.Operation]
 	if !ok {
 		return nil, OperationNotFound
 	}
