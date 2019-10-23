@@ -2,6 +2,7 @@ package kafkalib
 
 import (
 	"errors"
+
 	"github.com/Shopify/sarama"
 )
 
@@ -212,7 +213,7 @@ func (a ACLsByResource) UnmarshalResourceAcls(rACLs []sarama.ResourceAcls) error
 			ResourceName: rACL.ResourceName,
 		}
 		acls := &ACLs{}
-		err := acls.UnmarshalSarama(rACL)
+		err := acls.UnmarshalSarama(&rACL)
 		if err != nil {
 			return err
 		}

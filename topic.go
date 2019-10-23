@@ -15,12 +15,14 @@ type Topic struct {
 	ACLs              []ACLs `json:"acls,omitempty"`
 }
 
+// Topics is a type alias for a slice of topics
 type Topics []Topic
 
+// MarshalText prints the topic config in a tab separated view into a buffer
 func (t Topics) MarshalText() ([]byte, error) {
 	buf := bytes.Buffer{}
 	w := tabwriter.NewWriter(&buf, 2, 8, 1, '\t', 0)
-	_, err := w.Write([]byte(`Topic\tPartitions\tReplicationFactor\tRetention\tACLs\n`))
+	_, err := w.Write([]byte(`Topic\tPartitions\tReplicationFactor\tRetention\n`))
 	if err != nil {
 		return nil, err
 	}
