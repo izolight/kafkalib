@@ -18,22 +18,22 @@ func Test_acls_MarshalJSON(t *testing.T) {
 			a: _acls{
 				{
 					Principal:      "User:test",
-					PermissionType: PermissionAllow,
-					Operation:      OperationAlter,
+					PermissionType: "Allow",
+					Operation:      "Alter",
 					Host:           "*",
 					Resource: Resource{
 						ResourceName: "test",
-						ResourceType: ResourceTopic,
+						ResourceType: "Topic",
 					},
 				},
 				{
 					Principal:      "User:two",
-					PermissionType: PermissionAllow,
-					Operation:      OperationRead,
+					PermissionType: "Allow",
+					Operation:      "Read",
 					Host:           "*",
 					Resource: Resource{
 						ResourceName: "test",
-						ResourceType: ResourceTopic,
+						ResourceType: "Topic",
 					},
 				},
 			},
@@ -68,24 +68,24 @@ func Test_abp_MarshalJSON(t *testing.T) {
 				"User:test": ACLs{
 					{
 						Principal:      "User:test",
-						PermissionType: PermissionAllow,
-						Operation:      OperationAlter,
+						PermissionType: "Allow",
+						Operation:      "Alter",
 						Host:           "*",
 						Resource: Resource{
 							ResourceName: "test",
-							ResourceType: ResourceTopic,
+							ResourceType: "Topic",
 						},
 					},
 				},
 				"User:two": ACLs{
 					{
 						Principal:      "User:two",
-						PermissionType: PermissionAllow,
-						Operation:      OperationRead,
+						PermissionType: "Allow",
+						Operation:      "Read",
 						Host:           "*",
 						Resource: Resource{
 							ResourceName: "test",
-							ResourceType: ResourceTopic,
+							ResourceType: "Topic",
 						},
 					},
 				},
@@ -120,41 +120,41 @@ func TestACLsByResource_MarshalJSON(t *testing.T) {
 			a: ACLsByResource{
 				Resource{
 					ResourceName: "test",
-					ResourceType: ResourceTopic,
+					ResourceType: "Topic",
 				}: ACLs{
 					{
 						Principal:      "User:test",
-						PermissionType: PermissionAllow,
-						Operation:      OperationAlter,
+						PermissionType: "Allow",
+						Operation:      "Alter",
 						Host:           "*",
 						Resource: Resource{
 							ResourceName: "test",
-							ResourceType: ResourceTopic,
+							ResourceType: "Topic",
 						},
 					},
 					{
 						Principal:      "User:two",
-						PermissionType: PermissionAllow,
-						Operation:      OperationRead,
+						PermissionType: "Allow",
+						Operation:      "Read",
 						Host:           "*",
 						Resource: Resource{
 							ResourceName: "test",
-							ResourceType: ResourceTopic,
+							ResourceType: "Topic",
 						},
 					},
 				},
 				Resource{
 					ResourceName: "test2",
-					ResourceType: ResourceTopic,
+					ResourceType: "Topic",
 				}: ACLs{
 					{
 						Principal:      "User:test",
-						PermissionType: PermissionAllow,
-						Operation:      OperationAlter,
+						PermissionType: "Allow",
+						Operation:      "Alter",
 						Host:           "*",
 						Resource: Resource{
 							ResourceName: "test2",
-							ResourceType: ResourceTopic,
+							ResourceType: "Topic",
 						},
 					},
 				},
@@ -190,31 +190,31 @@ func TestACLsByPrincipalAndResource_MarshalJSON(t *testing.T) {
 				"User:test": map[Resource]ACLs{
 					Resource{
 						ResourceName: "test",
-						ResourceType: ResourceTopic,
+						ResourceType: "Topic",
 					}: {
 						ACL{
 							Principal:      "User:test",
-							PermissionType: PermissionAllow,
-							Operation:      OperationAlter,
+							PermissionType: "Allow",
+							Operation:      "Alter",
 							Host:           "*",
 							Resource: Resource{
 								ResourceName: "test",
-								ResourceType: ResourceTopic,
+								ResourceType: "Topic",
 							},
 						},
 					},
 					Resource{
 						ResourceName: "test-2",
-						ResourceType: ResourceTopic,
+						ResourceType: "Topic",
 					}: {
 						ACL{
 							Principal:      "User:test",
-							PermissionType: PermissionAllow,
-							Operation:      OperationRead,
+							PermissionType: "Allow",
+							Operation:      "Read",
 							Host:           "*",
 							Resource: Resource{
 								ResourceName: "test-2",
-								ResourceType: ResourceTopic,
+								ResourceType: "Topic",
 							},
 						},
 					},
@@ -222,16 +222,16 @@ func TestACLsByPrincipalAndResource_MarshalJSON(t *testing.T) {
 				"User:two": map[Resource]ACLs{
 					Resource{
 						ResourceName: "test",
-						ResourceType: ResourceTopic,
+						ResourceType: "Topic",
 					}: {
 						ACL{
 							Principal:      "User:two",
-							PermissionType: PermissionAllow,
-							Operation:      OperationDescribe,
+							PermissionType: "Allow",
+							Operation:      "Describe",
 							Host:           "*",
 							Resource: Resource{
 								ResourceName: "test",
-								ResourceType: ResourceTopic,
+								ResourceType: "Topic",
 							},
 						},
 					},
@@ -267,46 +267,46 @@ func TestACLsByResourceAndPrincipal_MarshalJSON(t *testing.T) {
 			a: ACLsByResourceAndPrincipal{
 				Resource{
 					ResourceName: "test",
-					ResourceType: ResourceTopic,
+					ResourceType: "Topic",
 				}: map[string]ACLs{
 					"User:test": {
 						ACL{
 							Principal:      "User:test",
-							PermissionType: PermissionAllow,
-							Operation:      OperationAlter,
+							PermissionType: "Allow",
+							Operation:      "Alter",
 							Host:           "*",
 							Resource: Resource{
 								ResourceName: "test",
-								ResourceType: ResourceTopic,
+								ResourceType: "Topic",
 							},
 						},
 					},
 					"User:two": {
 						ACL{
 							Principal:      "User:two",
-							PermissionType: PermissionAllow,
-							Operation:      OperationDescribe,
+							PermissionType: "Allow",
+							Operation:      "Describe",
 							Host:           "*",
 							Resource: Resource{
 								ResourceName: "test",
-								ResourceType: ResourceTopic,
+								ResourceType: "Topic",
 							},
 						},
 					},
 				},
 				Resource{
 					ResourceName: "test-2",
-					ResourceType: ResourceTopic,
+					ResourceType: "Topic",
 				}: map[string]ACLs{
 					"User:test": {
 						ACL{
 							Principal:      "User:test",
-							PermissionType: PermissionAllow,
-							Operation:      OperationRead,
+							PermissionType: "Allow",
+							Operation:      "Read",
 							Host:           "*",
 							Resource: Resource{
 								ResourceName: "test-2",
-								ResourceType: ResourceTopic,
+								ResourceType: "Topic",
 							},
 						},
 					},

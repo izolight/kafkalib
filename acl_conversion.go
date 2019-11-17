@@ -19,8 +19,9 @@ func (a ACL) MarshalSaramaRACL() (*sarama.ResourceAcls, error) {
 		return nil, err
 	}
 
-	resourceType, ok := resourceTypeToID[a.ResourceType]
-	if !ok {
+	var resourceType sarama.AclResourceType
+	err = resourceType.UnmarshalText([]byte(a.ResourceType))
+	if err != nil {
 		return nil, ResourceTypeNotFound
 	}
 
@@ -40,14 +41,16 @@ func (a ACL) MarshalSaramaACL() (*sarama.Acl, error) {
 		Host:      a.Host,
 	}
 
-	permissionType, ok := permissionToID[a.PermissionType]
-	if !ok {
+	var permissionType sarama.AclPermissionType
+	err := permissionType.UnmarshalText([]byte(a.PermissionType))
+	if err != nil {
 		return nil, PermissionNotFound
 	}
 	acl.PermissionType = permissionType
 
-	operation, ok := OperationToID[a.Operation]
-	if !ok {
+	var operation sarama.AclOperation
+	err = operation.UnmarshalText([]byte(a.Operation))
+	if err != nil {
 		return nil, OperationNotFound
 	}
 	acl.Operation = operation
@@ -57,8 +60,9 @@ func (a ACL) MarshalSaramaACL() (*sarama.Acl, error) {
 
 // MarshalResourceAcls converts a list of ACL(with same resource) to sarama.ResourceAcls
 func (a ACLs) MarshalSaramaPerResource() (*sarama.ResourceAcls, error) {
-	resourceType, ok := resourceTypeToID[a[0].ResourceType]
-	if !ok {
+	var resourceType sarama.AclResourceType
+	err := resourceType.UnmarshalText([]byte(a[0].ResourceType))
+	if err != nil {
 		return nil, ResourceTypeNotFound
 	}
 
@@ -72,10 +76,6 @@ func (a ACLs) MarshalSaramaPerResource() (*sarama.ResourceAcls, error) {
 	for i := range a {
 		if a[i].ResourceName != rACLs.ResourceName {
 			return nil, errors.New("ResourceMismatch")
-		}
-		resourceType, ok := resourceTypeToID[a[0].ResourceType]
-		if !ok {
-			return nil, ResourceTypeNotFound
 		}
 		if resourceType != rACLs.ResourceType {
 			return nil, errors.New("ResourceMismatch")
@@ -135,8 +135,9 @@ func (a ACLsByResourceAndPrincipal) MarshalResourceAcls() ([]*sarama.ResourceAcl
 	rACLs := make([]*sarama.ResourceAcls, len(a))
 	i := 0
 	for r := range a {
-		resourceType, ok := resourceTypeToID[r.ResourceType]
-		if !ok {
+		var resourceType sarama.AclResourceType
+		err := resourceType.UnmarshalText([]byte(r.ResourceType))
+		if err != nil {
 			return nil, ResourceTypeNotFound
 		}
 		apr := &sarama.ResourceAcls{
@@ -160,15 +161,15 @@ func (a ACLsByResourceAndPrincipal) MarshalResourceAcls() ([]*sarama.ResourceAcl
 
 func (a *ACLs) UnmarshalSarama(rACLs *sarama.ResourceAcls) error {
 	acls := make(ACLs, len(rACLs.Acls))
-	resourceType, ok := resourceTypeToString[rACLs.ResourceType]
-	if !ok {
+	resourceType, err := rACLs.ResourceType.MarshalText()
+	if err != nil {
 		return ResourceTypeNotFound
 	}
 	i := 0
 	for _, ac := range rACLs.Acls {
 		acl := &ACL{
 			Resource: Resource{
-				ResourceType: resourceType,
+				ResourceType: string(resourceType),
 				ResourceName: rACLs.ResourceName,
 			},
 		}
@@ -186,17 +187,17 @@ func (a *ACLs) UnmarshalSarama(rACLs *sarama.ResourceAcls) error {
 func (a *ACL) UnmarshalSarama(acl *sarama.Acl) error {
 	a.Principal = acl.Principal
 	a.Host = acl.Host
-	operation, ok := operationToString[acl.Operation]
-	if !ok {
+	operation, err := acl.Operation.MarshalText()
+	if err != nil {
 		return OperationNotFound
 	}
-	a.Operation = operation
+	a.Operation = string(operation)
 
-	permissionType, ok := permissionToString[acl.PermissionType]
-	if !ok {
+	permissionType, err := acl.PermissionType.MarshalText()
+	if err != nil {
 		return PermissionNotFound
 	}
-	a.PermissionType = permissionType
+	a.PermissionType = string(permissionType)
 
 	return nil
 }
@@ -204,16 +205,16 @@ func (a *ACL) UnmarshalSarama(acl *sarama.Acl) error {
 // UnmarshalResourceAcls converts a list of sarama.ResourceAcls to ACLsByResource
 func (a ACLsByResource) UnmarshalResourceAcls(rACLs []sarama.ResourceAcls) error {
 	for _, rACL := range rACLs {
-		resourceType, ok := resourceTypeToString[rACL.ResourceType]
-		if !ok {
+		resourceType, err := rACL.ResourceType.MarshalText()
+		if err != nil {
 			return ResourceTypeNotFound
 		}
 		resource := Resource{
-			ResourceType: resourceType,
+			ResourceType: string(resourceType),
 			ResourceName: rACL.ResourceName,
 		}
 		acls := &ACLs{}
-		err := acls.UnmarshalSarama(&rACL)
+		err = acls.UnmarshalSarama(&rACL)
 		if err != nil {
 			return err
 		}
@@ -225,12 +226,12 @@ func (a ACLsByResource) UnmarshalResourceAcls(rACLs []sarama.ResourceAcls) error
 // UnmarshalResourceAcls converts a list of sarama.ResourceAcls to ACLsByResourceAndPrincipal
 func (a ACLsByResourceAndPrincipal) UnmarshalResourceAcls(rACLs []*sarama.ResourceAcls) error {
 	for _, rACL := range rACLs {
-		resourceType, ok := resourceTypeToString[rACL.ResourceType]
-		if !ok {
+		resourceType, err := rACL.ResourceType.MarshalText()
+		if err != nil {
 			return ResourceTypeNotFound
 		}
 		resource := Resource{
-			ResourceType: resourceType,
+			ResourceType: string(resourceType),
 			ResourceName: rACL.ResourceName,
 		}
 		for _, ac := range rACL.Acls {
@@ -250,12 +251,12 @@ func (a ACLsByResourceAndPrincipal) UnmarshalResourceAcls(rACLs []*sarama.Resour
 
 func (a ACLsByPrincipal) UnmarshalResourceAcls(rACLs []*sarama.ResourceAcls) error {
 	for _, rACL := range rACLs {
-		resourceType, ok := resourceTypeToString[rACL.ResourceType]
-		if !ok {
+		resourceType, err := rACL.ResourceType.MarshalText()
+		if err != nil {
 			return ResourceTypeNotFound
 		}
 		resource := Resource{
-			ResourceType: resourceType,
+			ResourceType: string(resourceType),
 			ResourceName: rACL.ResourceName,
 		}
 		for _, ac := range rACL.Acls {
@@ -275,12 +276,12 @@ func (a ACLsByPrincipal) UnmarshalResourceAcls(rACLs []*sarama.ResourceAcls) err
 
 func (a ACLsByPrincipalAndResource) UnmarshalResourceAcls(rACLs []*sarama.ResourceAcls) error {
 	for _, rACL := range rACLs {
-		resourceType, ok := resourceTypeToString[rACL.ResourceType]
-		if !ok {
+		resourceType, err := rACL.ResourceType.MarshalText()
+		if err != nil {
 			return ResourceTypeNotFound
 		}
 		resource := Resource{
-			ResourceType: resourceType,
+			ResourceType: string(resourceType),
 			ResourceName: rACL.ResourceName,
 		}
 		for _, ac := range rACL.Acls {

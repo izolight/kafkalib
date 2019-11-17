@@ -11,7 +11,7 @@ func TestACL_Get(t *testing.T) {
 }
 
 func TestACL_GetAll(t *testing.T) {
-	client := kafkalib.NewTestClient()
+	client := NewTestClient()
 	testCases := []struct {
 		success bool
 	}{
@@ -41,7 +41,7 @@ func TestACL_GetAll(t *testing.T) {
 }
 
 func TestACL_Create(t *testing.T) {
-	client := kafkalib.NewTestClient()
+	client := NewTestClient()
 	testCases := []struct {
 		acl     sarama.AclCreation
 		success bool

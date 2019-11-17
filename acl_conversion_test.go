@@ -25,12 +25,12 @@ func TestACL_MarshalSaramaRACL(t *testing.T) {
 			name: "simple acl",
 			fields: fields{
 				Principal:      "User:test",
-				PermissionType: PermissionAllow,
-				Operation:      OperationCreate,
+				PermissionType: "Allow",
+				Operation:      "Create",
 				Host:           "*",
 				Resource: Resource{
 					ResourceName: "test",
-					ResourceType: ResourceTopic,
+					ResourceType: "Topic",
 				},
 			},
 			want: &sarama.ResourceAcls{
@@ -89,12 +89,12 @@ func TestACL_MarshalSaramaACL(t *testing.T) {
 			name: "simple acl",
 			fields: fields{
 				Principal:      "User:test",
-				PermissionType: PermissionAllow,
-				Operation:      OperationAlter,
+				PermissionType: "Allow",
+				Operation:      "Alter",
 				Host:           "*",
 				Resource: Resource{
 					ResourceName: "test",
-					ResourceType: ResourceTopic,
+					ResourceType: "Topic",
 				},
 			},
 			want: &sarama.Acl{
@@ -139,22 +139,22 @@ func TestACLs_MarshalSaramaPerResource(t *testing.T) {
 			a: ACLs{
 				{
 					Principal:      "User:test",
-					PermissionType: PermissionAllow,
-					Operation:      OperationAlter,
+					PermissionType: "Allow",
+					Operation:      "Alter",
 					Host:           "*",
 					Resource: Resource{
 						ResourceName: "test",
-						ResourceType: ResourceTopic,
+						ResourceType: "Topic",
 					},
 				},
 				{
 					Principal:      "User:two",
-					PermissionType: PermissionAllow,
-					Operation:      OperationRead,
+					PermissionType: "Allow",
+					Operation:      "Read",
 					Host:           "*",
 					Resource: Resource{
 						ResourceName: "test",
-						ResourceType: ResourceTopic,
+						ResourceType: "Topic",
 					},
 				},
 			},
@@ -185,22 +185,22 @@ func TestACLs_MarshalSaramaPerResource(t *testing.T) {
 			a: ACLs{
 				{
 					Principal:      "User:test",
-					PermissionType: PermissionAllow,
-					Operation:      OperationAlter,
+					PermissionType: "Allow",
+					Operation:      "Alter",
 					Host:           "*",
 					Resource: Resource{
 						ResourceName: "test",
-						ResourceType: ResourceTopic,
+						ResourceType: "Topic",
 					},
 				},
 				{
 					Principal:      "User:two",
-					PermissionType: PermissionAllow,
-					Operation:      OperationRead,
+					PermissionType: "Allow",
+					Operation:      "Read",
 					Host:           "*",
 					Resource: Resource{
 						ResourceName: "test-a",
-						ResourceType: ResourceTopic,
+						ResourceType: "Topic",
 					},
 				},
 			},
@@ -372,7 +372,7 @@ func TestACL_UnmarshalSarama(t *testing.T) {
 
 func TestACLsByResource_UnmarshalSarama(t *testing.T) {
 	type args struct {
-		rACLs []*sarama.ResourceAcls
+		rACLs []sarama.ResourceAcls
 	}
 	tests := []struct {
 		name    string

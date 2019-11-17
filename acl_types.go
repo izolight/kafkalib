@@ -118,5 +118,3 @@ type Resource struct {
 func (r Resource) String() string {
 	return fmt.Sprintf("%s/%s", r.ResourceType, r.ResourceName)
 }
-
-

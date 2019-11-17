@@ -4,8 +4,9 @@ import (
 	"github.com/izolight/kafkalib"
 	"testing"
 )
+
 func TestTopic_GetAll(t *testing.T) {
-	client := kafkalib.NewTestClient()
+	client := NewTestClient()
 	testCases := []struct {
 		success bool
 	}{
@@ -33,7 +34,7 @@ func TestTopic_GetAll(t *testing.T) {
 }
 
 func TestTopic_Get(t *testing.T) {
-	client := kafkalib.NewTestClient()
+	client := NewTestClient()
 	testCases := []struct {
 		name    string
 		exists  bool
@@ -61,7 +62,7 @@ func TestTopic_Get(t *testing.T) {
 }
 
 func TestTopic_Create(t *testing.T) {
-	client := kafkalib.NewTestClient()
+	client := NewTestClient()
 	testCases := []struct {
 		name       string
 		partitions int
@@ -79,8 +80,8 @@ func TestTopic_Create(t *testing.T) {
 		}
 		if tc.create {
 			newTopic := kafkalib.Topic{
-				Name: tc.name,
-				Partitions: tc.partitions,
+				Name:              tc.name,
+				Partitions:        tc.partitions,
 				ReplicationFactor: tc.replicas,
 			}
 			err := c.CreateTopic(newTopic)
@@ -88,18 +89,18 @@ func TestTopic_Create(t *testing.T) {
 				t.Fatal(err)
 			}
 		}
-		topics, err := c.GetAllTopics()
+		_, err := c.GetAllTopics()
 		if err != nil {
 			t.Fatal(err)
 		}
-		if _, ok := topics[tc.name]; !ok && tc.create {
+		if tc.create {
 			t.Fatalf("Topic %s was not found after creation", tc.name)
 		}
 	}
 }
 
 func TestTopic_Delete(t *testing.T) {
-	client := kafkalib.NewTestClient()
+	client := NewTestClient()
 	testCases := []struct {
 		name   string
 		create bool
@@ -113,8 +114,8 @@ func TestTopic_Delete(t *testing.T) {
 		}
 		if tc.create {
 			newTopic := kafkalib.Topic{
-				Name: tc.name,
-				Partitions: 1,
+				Name:              tc.name,
+				Partitions:        1,
 				ReplicationFactor: 1,
 			}
 			err := c.CreateTopic(newTopic)
@@ -132,4 +133,3 @@ func TestTopic_Delete(t *testing.T) {
 		}
 	}
 }
-
